@@ -47,10 +47,37 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update({
+    id: req.body.id,
+    tag_name:req.body.tag_name,
+    },
+    {
+      where:{
+        tag_name: req.params.tag_name,
+      },
+    }
+  )
+  .then((updatedTag) =>{
+    res.json(updatedTag);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.json(err);
+  })
 });
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  Tag.destroy({
+    where: {
+    tag_name: req.params.tag_name,
+    },
+  })
+    .then((deletedTag) => {
+      res.json(deletedTag);
+    })
+    .catch((err) => res.json(err));
 });
+
 
 module.exports = router;
